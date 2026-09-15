@@ -35,6 +35,11 @@ void Graph::addEdge(int src_v,int dest_v,double weight)
 
 }
 
+const std::vector<Edge>& Graph::getNeighbors(int id) const
+{
+    return vertices[id].adj;
+    }
+
 
 //HELPER FUNCTIONS
 bool Graph::findVertex(std::string name){
@@ -70,7 +75,3 @@ bool Graph::findEdge(int src_v,int dest_v,double weight)
     return Vertex::findEdge(vertices[src_v], dest_v,weight);
 }
 
-void getNeighbors()
-{
-    std::cout <<"STILL DEVELOPING" << std::endl;
-}

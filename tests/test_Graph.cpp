@@ -69,3 +69,23 @@ TEST(Graphing,addEdge)
     graph.addEdge(0,1,10);
     EXPECT_TRUE(graph.findEdge(0,1,10));
 }
+
+TEST(Graphing,getNeighbors)
+{
+    Graph graph;
+    graph.addVertex("A");
+    graph.addVertex("B");
+    graph.addVertex("C");
+    graph.addVertex("D");
+
+    graph.addEdge(0,1,2);
+    graph.addEdge(0,2,10);
+    graph.addEdge(0,3,100);
+
+    const std::vector<Edge> edges = graph.getNeighbors(0);
+    size_t si = 3;
+
+    EXPECT_EQ(edges.size(),3);
+
+
+}

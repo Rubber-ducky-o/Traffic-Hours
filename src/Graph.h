@@ -44,7 +44,7 @@ class Graph{
 
         void addVertex(std::string name);
         void addEdge(int src_v,int dest_v, double weight);
-        void getNeighbors();
+        const std::vector<Edge>& getNeighbors(int id) const;
 };
 
 
