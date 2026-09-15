@@ -2,17 +2,6 @@
 #define PARSER_H
 #pragma once
 
-
-
 std::string grabbing_data();
-
-
-
-
-
-
-
-
-
 
 #endif

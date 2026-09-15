@@ -15,8 +15,11 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(Traffic_hour
+                src/parser.h
+                src/Graph.h
                 src/main.cpp
                 src/parser.cpp
+                src/Graph.cpp
                 )
 
 
@@ -34,8 +37,11 @@ enable_testing()
 
 add_executable(
     testing
-    tests/test.cpp
+    tests/test_Graph.cpp
+    src/Graph.cpp
 )
+
+target_include_directories(testing PRIVATE src)
 
 target_link_libraries(
     testing
@@ -45,5 +51,4 @@ target_link_libraries(
 )
 
 include(GoogleTest)
-
-gtest_add_tests(TARGET testing)
+gtest_discover_tests(testing)
