@@ -15,6 +15,13 @@ struct Vertex{
 
     static bool findEdge(const Vertex& vertex, int dest,int weight);
 
+    bool operator==(const Vertex& other)const{
+        return id == other.id && name == other.name && adj == other.adj;
+    }
+
+    bool operator!=(const Vertex& other) const{
+        return !(*this == other);
+    }
 };
 
 struct Edge {
@@ -30,10 +37,14 @@ class Graph{
     private:
         std::vector<Vertex> vertices;
 
+
+
     public:
-        static constexpr double INF = std::numeric_limits<double>::infinity();
         Graph();
 
+        const std::vector<Vertex>& getData() const;
+
+        int size();
 
         bool findVertex(std::string name);
         bool findVertex(int id);

@@ -8,6 +8,15 @@ Edge::Edge(double cost, int dest) : cost(cost), destination(dest) {}
 
 Graph::Graph() {}
 
+const std::vector<Vertex>& Graph::getData() const
+{
+    return vertices;
+}
+int Graph::size()
+{
+    return vertices.size();
+}
+
 Vertex& Graph::operator[](int index)
 {
     return vertices[index];
