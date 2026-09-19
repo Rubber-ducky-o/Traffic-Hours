@@ -12,7 +12,7 @@ const std::vector<Vertex>& Graph::getData() const
 {
     return vertices;
 }
-int Graph::size()
+int Graph::size() const
 {
     return vertices.size();
 }

@@ -20,6 +20,7 @@ add_executable(Traffic_hour
                 src/main.cpp
                 src/parser.cpp
                 src/Graph.cpp
+                src/algorithm.cpp
                 )
 
 
@@ -38,6 +39,9 @@ enable_testing()
 add_executable(
     testing
     tests/test_Graph.cpp
+    tests/test_algorithms.cpp
+
+    src/algorithm.cpp
     src/Graph.cpp
 )
 

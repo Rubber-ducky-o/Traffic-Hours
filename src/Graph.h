@@ -29,6 +29,14 @@ struct Edge {
     int destination;
 
     Edge(double cost, int dest);
+
+    bool operator==(const Edge& other)const{
+        return cost == other.cost && destination == other.destination;
+    }
+
+    bool operator!=(const Edge& other)const {
+        return !(*this == other);
+    }
 };
 
 
@@ -44,7 +52,7 @@ class Graph{
 
         const std::vector<Vertex>& getData() const;
 
-        int size();
+        int size() const;
 
         bool findVertex(std::string name);
         bool findVertex(int id);
