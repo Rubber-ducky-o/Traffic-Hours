@@ -10,33 +10,33 @@ struct Vertex{
     int id;
     std::string name;
     std::vector<Edge> adj;
+    // (LATITUDE, LONGITUDE)
+    std::pair<double,double> coordinates;
 
-    Vertex(int id, std::string name);
 
-    static bool findEdge(const Vertex& vertex, int dest,int weight);
+    Vertex(int id, std::string name,double lat,double longi);
 
-    bool operator==(const Vertex& other)const{
-        return id == other.id && name == other.name && adj == other.adj;
-    }
+    static bool findEdge(const Vertex& vertex,int destination,double distance,double travel_time);
 
-    bool operator!=(const Vertex& other) const{
-        return !(*this == other);
-    }
+    bool operator==(const Vertex& other)const;
+
+    bool operator!=(const Vertex& other) const;
+
+    std::pair<double,double> getcoords();
+
 };
 
 struct Edge {
-    double cost;
-    int destination;
+    double travel_time;//time
+    double distance;//miles
+    int destination;//other vertex
 
-    Edge(double cost, int dest);
 
-    bool operator==(const Edge& other)const{
-        return cost == other.cost && destination == other.destination;
-    }
+    Edge(int destination,double distance, double travel_time);
 
-    bool operator!=(const Edge& other)const {
-        return !(*this == other);
-    }
+    bool operator==(const Edge& other)const;
+
+    bool operator!=(const Edge& other)const;
 };
 
 
@@ -56,13 +56,13 @@ class Graph{
 
         bool findVertex(std::string name);
         bool findVertex(int id);
-        bool findEdge(int src_v,int dest_v,double weight);
+        bool findEdge(int source,int destination,double distance,double travel_time);
 
         Vertex& operator[](int index);
 
 
-        void addVertex(std::string name);
-        void addEdge(int src_v,int dest_v, double weight);
+        void addVertex(std::string name,double lat,double longi);
+        void addEdge(int source,int destination,double distance, double travel_time);
         const std::vector<Edge>& getNeighbors(int id) const;
 };
 

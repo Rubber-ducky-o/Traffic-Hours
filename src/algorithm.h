@@ -4,22 +4,34 @@
 #include <queue>
 #include <vector>
 #include <utility>
+#include <cmath>
+
 
 static constexpr double INF = std::numeric_limits<double>::infinity();
 
 struct Pathway
 {
-    double distance;
+    double travel_time;
     std::vector<int>path;
 
-    Pathway(double dist) : distance(dist) {}
+    Pathway(double dist) : travel_time(dist) {}
 };
 
 std::vector<int> reconstruct_pathway(std::vector<int> came_from,int start,int end);
 
 Pathway dijkstra(const Graph& graph, int src,int end);
 
-double heuristic(double longitude,double latitude);
+double heuristic(Graph graph,double current,double goal);
+
+double radian_conversion(double coord);
+
+double intermediate_value(double lat1,double lat2,double phi,double lambda);
+
+double haversine(double theta);
+
+double central_angle(double a);
+
+
 
 Pathway a_star(const Graph& graph,int start, int end);
 
