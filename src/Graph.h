@@ -16,7 +16,7 @@ struct Vertex{
 
     Vertex(int id, std::string name,double lat,double longi);
 
-    static bool findEdge(const Vertex& vertex,int destination,double distance,double travel_time);
+    static bool findEdge(const Vertex& vertex,int destination,double distance,double travel_time,int speed);
 
     bool operator==(const Vertex& other)const;
 
@@ -30,9 +30,11 @@ struct Edge {
     double travel_time;//time
     double distance;//miles
     int destination;//other vertex
+    int speed_limit;
 
 
-    Edge(int destination,double distance, double travel_time);
+
+    Edge(int destination,double distance, double travel_time,int speed_limit);
 
     bool operator==(const Edge& other)const;
 
@@ -51,18 +53,21 @@ class Graph{
         Graph();
 
         const std::vector<Vertex>& getData() const;
+        const Edge& getEdge(int source, int destination);
 
         int size() const;
 
         bool findVertex(std::string name);
         bool findVertex(int id);
-        bool findEdge(int source,int destination,double distance,double travel_time);
+        bool findEdge(int source,int destination,double distance,double travel_time,int speed);
+
+
 
         Vertex& operator[](int index);
 
 
         void addVertex(std::string name,double lat,double longi);
-        void addEdge(int source,int destination,double distance, double travel_time);
+        void addEdge(int source,int destination,double distance, double travel_time,int speed);
         const std::vector<Edge>& getNeighbors(int id) const;
 };
 

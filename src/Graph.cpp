@@ -18,11 +18,11 @@ std::pair<double,double> Vertex::getcoords() {
     return coordinates;
 }
 
-Edge::Edge(int destination, double distance,double travel_time) : travel_time(travel_time), distance(distance),destination(destination) {}
+Edge::Edge(int destination, double distance,double travel_time,int speed_limit) : travel_time(travel_time), distance(distance),destination(destination), speed_limit(speed_limit) {}
 
 
 bool Edge::operator==(const Edge& other)const{
-    return travel_time == other.travel_time && destination == other.destination && distance == other.distance;
+    return travel_time == other.travel_time && destination == other.destination && distance == other.distance && speed_limit == other.speed_limit;
 }
 
 
@@ -61,16 +61,21 @@ void Graph::addVertex(std::string name,double lat,double longi)
 }
 
 
-void Graph::addEdge(int source,int destination, double distance,double travel_time)
+void Graph::addEdge(int source,int destination, double distance,double travel_time,int speed)
 {
     if (!findVertex(source) ||!findVertex(destination) ) return;
 
-    if (Vertex::findEdge(vertices[source], destination, distance,travel_time)) return;
+    if (Vertex::findEdge(vertices[source], destination, distance,travel_time,speed)) return;
 
 
-    Edge new_edge(destination,distance, travel_time);
+    Edge new_edge(destination,distance, travel_time, speed);
     vertices[source].adj.push_back(new_edge);
 
+
+}
+
+const Edge& Graph::getEdge(int source, int destination)
+{
 
 }
 
@@ -100,12 +105,12 @@ bool Graph::findVertex(int id){
 }
 
 
-bool Vertex::findEdge(const Vertex& vertex,int destination, double distance,double travel_time){
+bool Vertex::findEdge(const Vertex& vertex,int destination, double distance,double travel_time,int speed){
 
 
     for (const auto& Edge : vertex.adj)
     {
-        if (Edge.destination == destination && Edge.travel_time == travel_time && Edge.distance == distance) return true;
+        if (Edge.destination == destination && Edge.travel_time == travel_time && Edge.distance == distance && Edge.speed_limit == speed) return true;
 
     }
     return false;
@@ -113,8 +118,8 @@ bool Vertex::findEdge(const Vertex& vertex,int destination, double distance,doub
 }
 
 
-bool Graph::findEdge(int source,int destination,double distance,double travel_time)
+bool Graph::findEdge(int source,int destination,double distance,double travel_time,int speed)
 {
-    return Vertex::findEdge(vertices[source],destination, distance,travel_time);
+    return Vertex::findEdge(vertices[source],destination, distance,travel_time,speed);
 }
 
