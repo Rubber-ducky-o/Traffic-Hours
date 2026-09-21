@@ -4,11 +4,17 @@
 
 TEST(EdgeTest,Initialize)
 {
-    Edge a_edge(4,200,3.2);
+    Edge a_edge(4,200,3.2,65);
 
     EXPECT_EQ(a_edge.distance, 200);
     EXPECT_EQ(a_edge.travel_time,3.2);
     EXPECT_EQ(a_edge.destination,4);
+    EXPECT_EQ(a_edge.speed_limit,65);
+
+    Edge fallback(5,10.0,-1.0,50);
+
+    EXPECT_NEAR(fallback.travel_time,12.0,0.001);
+
 }
 
 TEST(Vertex, Initialize){
@@ -23,10 +29,10 @@ TEST(Vertex, Initialize){
 
 TEST(Vertex, findEdge){
     Vertex vert(0,"test_vertex",0.2802232,82.2907);
-    Edge edge(10,2.3,10);
+    Edge edge(10,2.3,10,65);
     vert.adj.push_back(edge);
 
-    EXPECT_TRUE(Vertex::findEdge(vert,10,2.3,10));
+    EXPECT_TRUE(Vertex::findEdge(vert,10,2.3,10,65));
 
 }
 
@@ -69,8 +75,8 @@ TEST(Graphing,addEdge)
     graph.addVertex("A",0.2802232,82.2907);
     graph.addVertex("B",0.2802232,82.2907);
 
-    graph.addEdge(0,1,2.3,5);
-    EXPECT_TRUE(graph.findEdge(0,1,2.3,5));
+    graph.addEdge(0,1,2.3,5,65);
+    EXPECT_TRUE(graph.findEdge(0,1,2.3,5,65));
 }
 
 TEST(Graphing,getNeighbors)
@@ -81,9 +87,9 @@ TEST(Graphing,getNeighbors)
     graph.addVertex("C",0.2802232,82.2907);
     graph.addVertex("D",0.2802232,82.2907);
 
-    graph.addEdge(0,1,0.0,2);
-    graph.addEdge(0,2,0.0,10);
-    graph.addEdge(0,3,0.0,100);
+    graph.addEdge(0,1,0.0,2,65);
+    graph.addEdge(0,2,0.0,10,65);
+    graph.addEdge(0,3,0.0,100,65);
 
     const std::vector<Edge> edges = graph.getNeighbors(0);
     size_t si = 3;

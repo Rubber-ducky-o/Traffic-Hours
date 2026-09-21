@@ -22,7 +22,7 @@ struct Vertex{
 
     bool operator!=(const Vertex& other) const;
 
-    std::pair<double,double> getcoords();
+    std::pair<double,double> getcoords() const;
 
 };
 
@@ -53,16 +53,13 @@ class Graph{
         Graph();
 
         const std::vector<Vertex>& getData() const;
-        const Edge& getEdge(int source, int destination);
 
         int size() const;
 
         bool findVertex(std::string name);
         bool findVertex(int id);
         bool findEdge(int source,int destination,double distance,double travel_time,int speed);
-
-
-
+        const Vertex& operator[](int index) const;
         Vertex& operator[](int index);
 
 

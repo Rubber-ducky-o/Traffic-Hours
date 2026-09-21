@@ -21,7 +21,7 @@ std::vector<int> reconstruct_pathway(std::vector<int> came_from,int start,int en
 
 Pathway dijkstra(const Graph& graph, int src,int end);
 
-double heuristic(Graph graph,double current,double goal);
+double heuristic(const Graph& graph,double current,double goal);
 
 double radian_conversion(double coord);
 
@@ -31,6 +31,7 @@ double haversine(double theta);
 
 double central_angle(double a);
 
+double caltraveltime(double distance, int speed_limit);
 
 
 Pathway a_star(const Graph& graph,int start, int end);

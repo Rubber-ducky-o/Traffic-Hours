@@ -103,9 +103,9 @@ Pathway dijkstra(const Graph& graph, int src, int goal)
 
 }
 
-double PI = 3.141592653589793;
-
-double heuristic(Graph graph,double current,double goal)
+const double PI = 3.141592653589793;
+const double MAX_SPEED_MPH = 90.0;
+double heuristic(const Graph& graph,double current,double goal)
 {
     double R = 3959;
 
@@ -126,8 +126,11 @@ double heuristic(Graph graph,double current,double goal)
     double a = intermediate_value(lat_c,lat_g,phi,lambda);
     double c = central_angle(a);
 
+    double D = R * c;
 
-    return R * c;
+
+
+    return (D / MAX_SPEED_MPH) * 60.0;
 
 }
 
@@ -150,7 +153,15 @@ double central_angle(double a)
 {
     return 2 * std::atan2(std::sqrt(a),std::sqrt(1-a));
 }
+double caltraveltime(double distance, int speed_limit)
+{
+    if (speed_limit <= 0)
+    {
+        return -1.0;
+    }
 
+    return (distance / speed_limit) * 60.0;
+}
 
 
 Pathway a_star(const Graph& graph, int start, int goal)

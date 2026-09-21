@@ -28,16 +28,16 @@ TEST(Dijkstra,path){
     graph.addVertex("D",0.0,0.0);
     graph.addVertex("E",0.0,0.0);
 
-    graph.addEdge(0,1,0.0,10);
-    graph.addEdge(0,2,0.0,1);
-    graph.addEdge(0,3,0.0,10);
-    graph.addEdge(1,0,0.0,9);
-    graph.addEdge(1,2,0.0,4);
-    graph.addEdge(1,3,0.0,6);
-    graph.addEdge(2,0,0.0,0);
-    graph.addEdge(2,4,0.0,15);
-    graph.addEdge(3,1,0.0,4);
-    graph.addEdge(3,4,0.0,11);
+    graph.addEdge(0,1,0.0,10,65);
+    graph.addEdge(0,2,0.0,1,65);
+    graph.addEdge(0,3,0.0,10,65);
+    graph.addEdge(1,0,0.0,9,65);
+    graph.addEdge(1,2,0.0,4,65);
+    graph.addEdge(1,3,0.0,6,65);
+    graph.addEdge(2,0,0.0,0,65);
+    graph.addEdge(2,4,0.0,15,65);
+    graph.addEdge(3,1,0.0,4,65);
+    graph.addEdge(3,4,0.0,11,65);
 
     Pathway val1 = dijkstra(graph,0,4);
 
@@ -57,16 +57,16 @@ TEST(Dijkstra,shortest_path){
     graph.addVertex("D",0.0,0.0);
     graph.addVertex("E",0.0,0.0);
 
-    graph.addEdge(0,1,0.0,10);
-    graph.addEdge(0,2,0.0,1);
-    graph.addEdge(0,3,0.0,10);
-    graph.addEdge(1,0,0.0,9);
-    graph.addEdge(1,2,0.0,4);
-    graph.addEdge(1,3,0.0,6);
-    graph.addEdge(2,0,0.0,0);
-    graph.addEdge(2,4,0.0,15);
-    graph.addEdge(3,1,0.0,4);
-    graph.addEdge(3,4,0.0,11);
+    graph.addEdge(0,1,0.0,10,65);
+    graph.addEdge(0,2,0.0,1,65);
+    graph.addEdge(0,3,0.0,10,65);
+    graph.addEdge(1,0,0.0,9,65);
+    graph.addEdge(1,2,0.0,4,65);
+    graph.addEdge(1,3,0.0,6,65);
+    graph.addEdge(2,0,0.0,0,65);
+    graph.addEdge(2,4,0.0,15,65);
+    graph.addEdge(3,1,0.0,4,65);
+    graph.addEdge(3,4,0.0,11,65);
 
     Pathway val1 = dijkstra(graph,2,2);
 
@@ -86,13 +86,13 @@ TEST(Dijkstra,multipath)
     graph.addVertex("C",0.0,0.0);
     graph.addVertex("G",0.0,0.0);
 
-    graph.addEdge(0,1,0.0,14);
-    graph.addEdge(0,2,0.0,12);
-    graph.addEdge(1,1,0.0,6);
-    graph.addEdge(1,2,0.0,6);
-    graph.addEdge(2,2,0.0,2);
-    graph.addEdge(2,4,0.0,18);
-    graph.addEdge(3,4,0.0,4);
+    graph.addEdge(0,1,0.0,14,65);
+    graph.addEdge(0,2,0.0,12,65);
+    graph.addEdge(1,1,0.0,6,65);
+    graph.addEdge(1,2,0.0,6,65);
+    graph.addEdge(2,2,0.0,2,65);
+    graph.addEdge(2,4,0.0,18,65);
+    graph.addEdge(3,4,0.0,4,65);
 
     Pathway ans = dijkstra(graph,0,4);
     std::vector<int>answer = {0,2,4};
@@ -110,16 +110,16 @@ TEST(Dijkstra, impossible_path){
     graph.addVertex("E",0.0,0.0);
     graph.addVertex("F",0.0,0.0);
 
-    graph.addEdge(0,1,0.0,10);
-    graph.addEdge(0,2,0.0,1);
-    graph.addEdge(0,3,0.0,10);
-    graph.addEdge(1,0,0.0,9);
-    graph.addEdge(1,2,0.0,4);
-    graph.addEdge(1,3,0.0,6);
-    graph.addEdge(2,0,0.0,0);
-    graph.addEdge(2,4,0.0,15);
-    graph.addEdge(3,1,0.0,4);
-    graph.addEdge(3,4,0.0,11);
+    graph.addEdge(0,1,0.0,10,65);
+    graph.addEdge(0,2,0.0,1,65);
+    graph.addEdge(0,3,0.0,10,65);
+    graph.addEdge(1,0,0.0,9,65);
+    graph.addEdge(1,2,0.0,4,65);
+    graph.addEdge(1,3,0.0,6,65);
+    graph.addEdge(2,0,0.0,0,65);
+    graph.addEdge(2,4,0.0,15,65);
+    graph.addEdge(3,1,0.0,4,65);
+    graph.addEdge(3,4,0.0,11,65);
 
     Pathway val1 = dijkstra(graph,0,5);
 
@@ -144,6 +144,20 @@ TEST(A_star,single_node)
 
 }
 
+TEST(TravelTime, Normalcase)
+{
+    double result = caltraveltime(10.0,50);
+
+    EXPECT_NEAR(result,12.0,0.001);
+
+}
+TEST(TravelTime,ErrorCase)
+{
+    double result = caltraveltime(10,0);
+    EXPECT_EQ(result, -1);
+}
+
+
 TEST(Heuristic,heuristic_result)
 {
     Graph graph;
@@ -151,7 +165,10 @@ TEST(Heuristic,heuristic_result)
     graph.addVertex("G",19.186333,-72.966961);
 
     double result = heuristic(graph,0,1);
-    EXPECT_NEAR(result,1.048,0.01);
+
+    double expected = (1.048 / 90.0) * 60;
+
+    EXPECT_NEAR(result,expected,0.01);
 
 
 
@@ -165,16 +182,16 @@ TEST(A_star,path){
     graph.addVertex("D",33.9390,-118.1185);
     graph.addVertex("E",33.9400,-118.1150);
 
-    graph.addEdge(0,1,1.2,10);
-    graph.addEdge(0,2,0.8,1);
-    graph.addEdge(0,3,1.5,10);
-    graph.addEdge(1,0,1.2,9);
-    graph.addEdge(1,2,0.7,4);
-    graph.addEdge(1,3,0.9,6);
-    graph.addEdge(2,0,0.8,0);
-    graph.addEdge(2,4,1.6,15);
-    graph.addEdge(3,1,0.9,4);
-    graph.addEdge(3,4,1.1,11);
+    graph.addEdge(0,1,1.2,10,65);
+    graph.addEdge(0,2,0.8,1,65);
+    graph.addEdge(0,3,1.5,10,65);
+    graph.addEdge(1,0,1.2,9,65);
+    graph.addEdge(1,2,0.7,4,65);
+    graph.addEdge(1,3,0.9,6,65);
+    graph.addEdge(2,0,0.8,0,65);
+    graph.addEdge(2,4,1.6,15,65);
+    graph.addEdge(3,1,0.9,4,65);
+    graph.addEdge(3,4,1.1,11,65);
 
     Pathway val1 = a_star(graph,0,4);
 
@@ -194,16 +211,16 @@ TEST(A_star,shortest_path){
     graph.addVertex("D",33.9390,-118.1185);
     graph.addVertex("E",33.9400,-118.1150);
 
-    graph.addEdge(0,1,1.2,10);
-    graph.addEdge(0,2,0.8,1);
-    graph.addEdge(0,3,1.5,10);
-    graph.addEdge(1,0,1.2,9);
-    graph.addEdge(1,2,0.7,4);
-    graph.addEdge(1,3,0.9,6);
-    graph.addEdge(2,0,0.8,0);
-    graph.addEdge(2,4,1.6,15);
-    graph.addEdge(3,1,0.9,4);
-    graph.addEdge(3,4,1.1,11);
+    graph.addEdge(0,1,1.2,10,65);
+    graph.addEdge(0,2,0.8,1,65);
+    graph.addEdge(0,3,1.5,10,65);
+    graph.addEdge(1,0,1.2,9,65);
+    graph.addEdge(1,2,0.7,4,65);
+    graph.addEdge(1,3,0.9,6,65);
+    graph.addEdge(2,0,0.8,0,65);
+    graph.addEdge(2,4,1.6,15,65);
+    graph.addEdge(3,1,0.9,4,65);
+    graph.addEdge(3,4,1.1,11,65);
 
     Pathway val1 = a_star(graph,2,2);
 
@@ -225,16 +242,16 @@ TEST(A_star, impossible_path){
     graph.addVertex("E",33.9400,-118.1150);
     graph.addVertex("F",0.0,0.0);
 
-    graph.addEdge(0,1,1.2,10);
-    graph.addEdge(0,2,0.8,1);
-    graph.addEdge(0,3,1.5,10);
-    graph.addEdge(1,0,1.2,9);
-    graph.addEdge(1,2,0.7,4);
-    graph.addEdge(1,3,0.9,6);
-    graph.addEdge(2,0,0.8,0);
-    graph.addEdge(2,4,1.6,15);
-    graph.addEdge(3,1,0.9,4);
-    graph.addEdge(3,4,1.1,11);
+    graph.addEdge(0,1,1.2,10,65);
+    graph.addEdge(0,2,0.8,1,65);
+    graph.addEdge(0,3,1.5,10,65);
+    graph.addEdge(1,0,1.2,9,65);
+    graph.addEdge(1,2,0.7,4,65);
+    graph.addEdge(1,3,0.9,6,65);
+    graph.addEdge(2,0,0.8,0,65);
+    graph.addEdge(2,4,1.6,15,65);
+    graph.addEdge(3,1,0.9,4,65);
+    graph.addEdge(3,4,1.1,11,65);
 
     Pathway val1 = a_star(graph,0,5);
 
@@ -253,13 +270,13 @@ TEST(A_star,multipath)
     graph.addVertex("C",33.9300,-118.0750);
     graph.addVertex("G",33.9400,-118.0510);
 
-    graph.addEdge(0,1,2.1,14);
-    graph.addEdge(0,2,1.2,12);
-    graph.addEdge(1,1,0.8,6);
-    graph.addEdge(1,2,0.7,6);
-    graph.addEdge(2,2,0.6,2);
-    graph.addEdge(2,4,7.6,18);
-    graph.addEdge(3,4,5.4,4);
+    graph.addEdge(0,1,2.1,14,65);
+    graph.addEdge(0,2,1.2,12,65);
+    graph.addEdge(1,1,0.8,6,65);
+    graph.addEdge(1,2,0.7,6,65);
+    graph.addEdge(2,2,0.6,2,65);
+    graph.addEdge(2,4,7.6,18,65);
+    graph.addEdge(3,4,5.4,4,65);
 
     Pathway ans = a_star(graph,0,4);
 

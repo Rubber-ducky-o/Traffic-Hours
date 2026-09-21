@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Graph.h"
+#include "algorithm.h"
 
 
 Vertex::Vertex(int id, std::string name,double lat,double longi ) : name(name), id(id), coordinates({lat,longi}) {}
@@ -14,11 +15,21 @@ bool Vertex::operator!=(const Vertex& other) const{
    return !(*this == other);
 }
 
-std::pair<double,double> Vertex::getcoords() {
+std::pair<double,double> Vertex::getcoords() const{
     return coordinates;
 }
 
-Edge::Edge(int destination, double distance,double travel_time,int speed_limit) : travel_time(travel_time), distance(distance),destination(destination), speed_limit(speed_limit) {}
+Edge::Edge(int destination, double distance,double travel_time,int speed_limit) : distance(distance),destination(destination), speed_limit(speed_limit) {
+    if (travel_time < 0)
+    {
+      this->travel_time =caltraveltime(distance, speed_limit);
+
+    }
+    else
+    {
+       this->travel_time = travel_time;
+    }
+}
 
 
 bool Edge::operator==(const Edge& other)const{
@@ -51,6 +62,10 @@ Vertex& Graph::operator[](int index)
     return vertices[index];
 }
 
+const Vertex& Graph::operator[](int index) const
+{
+    return vertices[index];
+}
 
 void Graph::addVertex(std::string name,double lat,double longi)
 {
@@ -74,10 +89,6 @@ void Graph::addEdge(int source,int destination, double distance,double travel_ti
 
 }
 
-const Edge& Graph::getEdge(int source, int destination)
-{
-
-}
 
 
 const std::vector<Edge>& Graph::getNeighbors(int id) const
