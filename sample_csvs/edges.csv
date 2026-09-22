@@ -1,0 +1,4 @@
+source,destination,distance,speed_limit
+0,1,1.2,45
+0,2,0.8,35
+1,2,0.7,40

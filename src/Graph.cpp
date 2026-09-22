@@ -80,7 +80,7 @@ void Graph::addEdge(int source,int destination, double distance,double travel_ti
 {
     if (!findVertex(source) ||!findVertex(destination) ) return;
 
-    if (Vertex::findEdge(vertices[source], destination, distance,travel_time,speed)) return;
+    if (Vertex::findEdge(vertices[source], destination)) return;
 
 
     Edge new_edge(destination,distance, travel_time, speed);
@@ -116,12 +116,12 @@ bool Graph::findVertex(int id){
 }
 
 
-bool Vertex::findEdge(const Vertex& vertex,int destination, double distance,double travel_time,int speed){
+bool Vertex::findEdge(const Vertex& vertex,int destination){
 
 
     for (const auto& Edge : vertex.adj)
     {
-        if (Edge.destination == destination && Edge.travel_time == travel_time && Edge.distance == distance && Edge.speed_limit == speed) return true;
+        if (Edge.destination == destination) return true;
 
     }
     return false;
@@ -129,8 +129,13 @@ bool Vertex::findEdge(const Vertex& vertex,int destination, double distance,doub
 }
 
 
-bool Graph::findEdge(int source,int destination,double distance,double travel_time,int speed)
+bool Graph::findEdge(int source,int destination)
 {
-    return Vertex::findEdge(vertices[source],destination, distance,travel_time,speed);
+    if (!findVertex(source || !findVertex(destination)))
+    {
+        return false;
+    }
+
+    return Vertex::findEdge(vertices[source],destination);
 }
 

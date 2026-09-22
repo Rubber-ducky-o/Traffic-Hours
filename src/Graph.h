@@ -16,7 +16,7 @@ struct Vertex{
 
     Vertex(int id, std::string name,double lat,double longi);
 
-    static bool findEdge(const Vertex& vertex,int destination,double distance,double travel_time,int speed);
+    static bool findEdge(const Vertex& vertex,int destination);
 
     bool operator==(const Vertex& other)const;
 
@@ -58,7 +58,7 @@ class Graph{
 
         bool findVertex(std::string name);
         bool findVertex(int id);
-        bool findEdge(int source,int destination,double distance,double travel_time,int speed);
+        bool findEdge(int source,int destination);
         const Vertex& operator[](int index) const;
         Vertex& operator[](int index);
 

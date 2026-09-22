@@ -32,7 +32,8 @@ TEST(Vertex, findEdge){
     Edge edge(10,2.3,10,65);
     vert.adj.push_back(edge);
 
-    EXPECT_TRUE(Vertex::findEdge(vert,10,2.3,10,65));
+    EXPECT_TRUE(Vertex::findEdge(vert,10));
+    EXPECT_FALSE(Vertex::findEdge(vert,5));
 
 }
 
@@ -76,7 +77,7 @@ TEST(Graphing,addEdge)
     graph.addVertex("B",0.2802232,82.2907);
 
     graph.addEdge(0,1,2.3,5,65);
-    EXPECT_TRUE(graph.findEdge(0,1,2.3,5,65));
+    EXPECT_TRUE(graph.findEdge(0,1));
 }
 
 TEST(Graphing,getNeighbors)
@@ -95,6 +96,21 @@ TEST(Graphing,getNeighbors)
     size_t si = 3;
 
     EXPECT_EQ(edges.size(),3);
+}
+
+TEST(Graphing,FreeFlowEdge)
+{
+    Graph graph;
+    graph.addVertex("A",0.0,0.0);
+    graph.addVertex("B",0.0,0.0);
+
+    graph.addEdge(0,1,10.0,-1.0,50);
+
+    auto edges = graph.getNeighbors(0);
+
+    EXPECT_EQ(edges.size(),1);
+    EXPECT_NEAR(edges[0].travel_time,12.0,0.001);
+    EXPECT_EQ(edges[0].speed_limit,50);
 
 
 }
