@@ -1,0 +1,327 @@
+{
+	"data":
+	[
+		{
+			"lcs":
+			{
+				"index": "C1AB-0001-2026-09-25-22:01:00",
+				"recordTimestamp":
+				{
+					"recordDate":  "2026-09-22",
+					"recordTime":  "16:13:03",
+					"recordEpoch": "1790118783"
+				},
+				"location":
+				{
+					"travelFlowDirection": "North",
+					"begin":
+					{
+						"beginDistrict":            "7",
+						"beginLocationName":        "Century Blvd",
+						"beginFreeFormDescription": "",
+						"beginNearbyPlace":         "Los Angeles",
+						"beginLongitude":           "-118.396158",
+						"beginLatitude":            "33.944099",
+						"beginElevation":           "114",
+						"beginDirection":           "",
+						"beginCounty":              "Los Angeles",
+						"beginRoute":               "SR-1",
+						"beginRouteSuffix":         "",
+						"beginPostmilePrefix":      "",
+						"beginPostmile":            "26.910",
+						"beginAlignment":           "",
+						"beginMilepost":            "56.723"
+					},
+					"end":
+					{
+						"endDistrict":            "7",
+						"endLocationName":        "Lincoln Blvd",
+						"endFreeFormDescription": "",
+						"endNearbyPlace":         "Los Angeles",
+						"endLongitude":           "-118.396180",
+						"endLatitude":            "33.949111",
+						"endElevation":           "108",
+						"endDirection":           "",
+						"endCounty":              "Los Angeles",
+						"endRoute":               "SR-1",
+						"endRouteSuffix":         "",
+						"endPostmilePrefix":      "",
+						"endPostmile":            "27.360",
+						"endAlignment":           "",
+						"endMilepost":            "53.694"
+					}
+				},
+				"closure":
+				{
+					"closureID": "C1AB",
+					"logNumber": "1",
+					"closureTimestamp":
+					{
+						"closureRequestDate":     "2026-09-11",
+						"closureRequestTime":     "15:13:11",
+						"closureRequestEpoch":    "1789164791",
+						"closureStartDate":       "2026-09-25",
+						"closureStartTime":       "22:01:00",
+						"closureStartEpoch":      "1790398860",
+						"closureEndDate":         "2026-09-26",
+						"closureEndTime":         "07:59:00",
+						"closureEndEpoch":        "1790434740",
+						"isClosureEndIndefinite": "false"
+					},
+					"facility":           "Mainline",
+					"typeOfClosure":      "Lane",
+					"typeOfWork":         "Utility Work",
+					"durationOfClosure":  "Standard",
+					"estimatedDelay":     "Not Reported",
+					"lanesClosed":        "1, 2",
+					"totalExistingLanes": "something_missing",
+					"isCHINReportable":   "true",
+					"code1097":
+					{
+						"isCode1097": "false",
+						"code1097Timestamp":
+						{
+							"code1097Date":  "",
+							"code1097Time":  "",
+							"code1097Epoch": ""
+						}
+					},
+					"code1098":
+					{
+						"isCode1098": "false",
+						"code1098Timestamp":
+						{
+							"code1098Date":  "",
+							"code1098Time":  "",
+							"code1098Epoch": ""
+						}
+					},
+					"code1022":
+					{
+						"isCode1022": "false",
+						"code1022Timestamp":
+						{
+							"code1022Date":  "",
+							"code1022Time":  "",
+							"code1022Epoch": ""
+						}
+					}
+				}
+			}
+		},
+		{
+			"lcs":
+			{
+				"index": "C1AB-0002-2026-09-25-22:01:00",
+				"recordTimestamp":
+				{
+					"recordDate":  "2026-09-22",
+					"recordTime":  "16:13:03",
+					"recordEpoch": "1790118783"
+				},
+				"location":
+				{
+					"travelFlowDirection": "North",
+					"begin":
+					{
+						"beginDistrict":            "7",
+						"beginLocationName":        "Century Blvd",
+						"beginFreeFormDescription": "",
+						"beginNearbyPlace":         "Los Angeles",
+						"beginLongitude":           "-118.396158",
+						"beginLatitude":            "33.944099",
+						"beginElevation":           "114",
+						"beginDirection":           "",
+						"beginCounty":              "Los Angeles",
+						"beginRoute":               "SR-1",
+						"beginRouteSuffix":         "",
+						"beginPostmilePrefix":      "",
+						"beginPostmile":            "26.910",
+						"beginAlignment":           "",
+						"beginMilepost":            "56.723"
+					},
+					"end":
+					{
+						"endDistrict":            "7",
+						"endLocationName":        "Lincoln Blvd",
+						"endFreeFormDescription": "",
+						"endNearbyPlace":         "Los Angeles",
+						"endLongitude":           "-118.396180",
+						"endLatitude":            "33.949111",
+						"endElevation":           "108",
+						"endDirection":           "",
+						"endCounty":              "Los Angeles",
+						"endRoute":               "SR-1",
+						"endRouteSuffix":         "",
+						"endPostmilePrefix":      "",
+						"endPostmile":            "27.360",
+						"endAlignment":           "",
+						"endMilepost":            "53.694"
+					}
+				},
+				"closure":
+				{
+					"closureID": "C1AB",
+					"logNumber": "2",
+					"closureTimestamp":
+					{
+						"closureRequestDate":     "2026-09-11",
+						"closureRequestTime":     "15:13:58",
+						"closureRequestEpoch":    "1789164838",
+						"closureStartDate":       "2026-09-25",
+						"closureStartTime":       "22:01:00",
+						"closureStartEpoch":      "1790398860",
+						"closureEndDate":         "2026-09-26",
+						"closureEndTime":         "07:59:00",
+						"closureEndEpoch":        "1790434740",
+						"isClosureEndIndefinite": "false"
+					},
+					"facility":           "Mainline",
+					"typeOfClosure":      "Lane",
+					"typeOfWork":         "Utility Work",
+					"durationOfClosure":  "Standard",
+					"estimatedDelay":     "Not Reported",
+					"lanesClosed":        "3, 4",
+					"totalExistingLanes": "4",
+					"isCHINReportable":   "true",
+					"code1097":
+					{
+						"isCode1097": "false",
+						"code1097Timestamp":
+						{
+							"code1097Date":  "",
+							"code1097Time":  "",
+							"code1097Epoch": ""
+						}
+					},
+					"code1098":
+					{
+						"isCode1098": "false",
+						"code1098Timestamp":
+						{
+							"code1098Date":  "",
+							"code1098Time":  "",
+							"code1098Epoch": ""
+						}
+					},
+					"code1022":
+					{
+						"isCode1022": "false",
+						"code1022Timestamp":
+						{
+							"code1022Date":  "",
+							"code1022Time":  "",
+							"code1022Epoch": ""
+						}
+					}
+				}
+			}
+		},
+		{
+			"lcs":
+			{
+				"index": "C1AB-0003-2026-09-26-00:01:00",
+				"recordTimestamp":
+				{
+					"recordDate":  "2026-09-22",
+					"recordTime":  "16:13:03",
+					"recordEpoch": "1790118783"
+				},
+				"location":
+				{
+					"travelFlowDirection": "North",
+					"begin":
+					{
+						"beginDistrict":            "7",
+						"beginLocationName":        "Century Blvd",
+						"beginFreeFormDescription": "",
+						"beginNearbyPlace":         "Los Angeles",
+						"beginLongitude":           "-118.396158",
+						"beginLatitude":            "33.944099",
+						"beginElevation":           "114",
+						"beginDirection":           "",
+						"beginCounty":              "Los Angeles",
+						"beginRoute":               "SR-1",
+						"beginRouteSuffix":         "",
+						"beginPostmilePrefix":      "",
+						"beginPostmile":            "26.910",
+						"beginAlignment":           "",
+						"beginMilepost":            "56.723"
+					},
+					"end":
+					{
+						"endDistrict":            "7",
+						"endLocationName":        "Lincoln Blvd",
+						"endFreeFormDescription": "",
+						"endNearbyPlace":         "Los Angeles",
+						"endLongitude":           "-118.396180",
+						"endLatitude":            "33.949111",
+						"endElevation":           "108",
+						"endDirection":           "",
+						"endCounty":              "Los Angeles",
+						"endRoute":               "SR-1",
+						"endRouteSuffix":         "",
+						"endPostmilePrefix":      "",
+						"endPostmile":            "27.360",
+						"endAlignment":           "",
+						"endMilepost":            "53.694"
+					}
+				},
+				"closure":
+				{
+					"closureID": "C1AB",
+					"logNumber": "3",
+					"closureTimestamp":
+					{
+						"closureRequestDate":     "2026-09-11",
+						"closureRequestTime":     "15:16:45",
+						"closureRequestEpoch":    "1789165005",
+						"closureStartDate":       "2026-09-26",
+						"closureStartTime":       "00:01:00",
+						"closureStartEpoch":      "1790406060",
+						"closureEndDate":         "2026-09-26",
+						"closureEndTime":         "04:59:00",
+						"closureEndEpoch":        "1790423940",
+						"isClosureEndIndefinite": "false"
+					},
+					"facility":           "Mainline",
+					"typeOfClosure":      "Lane",
+					"typeOfWork":         "Utility Work",
+					"durationOfClosure":  "Standard",
+					"estimatedDelay":     "Not Reported",
+					"lanesClosed":        "2, 3, 4",
+					"totalExistingLanes": "4",
+					"isCHINReportable":   "true",
+					"code1097":
+					{
+						"isCode1097": "false",
+						"code1097Timestamp":
+						{
+							"code1097Date":  "",
+							"code1097Time":  "",
+							"code1097Epoch": ""
+						}
+					},
+					"code1098":
+					{
+						"isCode1098": "false",
+						"code1098Timestamp":
+						{
+							"code1098Date":  "",
+							"code1098Time":  "",
+							"code1098Epoch": ""
+						}
+					},
+					"code1022":
+					{
+						"isCode1022": "false",
+						"code1022Timestamp":
+						{
+							"code1022Date":  "",
+							"code1022Time":  "",
+							"code1022Epoch": ""
+						}
+					}
+				}
+			}
+		},

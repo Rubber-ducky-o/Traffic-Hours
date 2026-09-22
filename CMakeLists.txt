@@ -40,9 +40,11 @@ add_executable(
     testing
     tests/test_Graph.cpp
     tests/test_algorithms.cpp
+    tests/test_parser.cpp
 
     src/algorithm.cpp
     src/Graph.cpp
+    src/parser.cpp
 )
 
 target_include_directories(testing PRIVATE src)
@@ -51,6 +53,8 @@ target_link_libraries(
     testing
     PRIVATE
     GTest::gtest_main
+    CURL::libcurl
+    JsonCpp::JsonCpp
 
 )
 

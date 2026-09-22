@@ -45,7 +45,7 @@ struct ClosureData
 
 
 
-std::vector<int> parseLanesClosed(const std::string& lanes);
+std::vector<int> parseLanesClosed(const std::string& lanes,int total_lanes);
 
 
 
@@ -53,7 +53,7 @@ std::vector<ClosureData> grabbing_data();
 
 std::string fetchData();
 
-std::vector<ClosureData> parseClosureData(std::string jsondata);
+std::vector<ClosureData> parseClosureData(const std::string& jsondata);
 
 
 
