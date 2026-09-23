@@ -4,6 +4,9 @@
     <node id="100" lat="33.944099" lon="-118.396158" />
     <node id="101" lat="33.945000" lon="-118.396170" />
     <node id="102" lat="33.949111" lon="-118.396180" />
+    <node id="103" lat="33.950500" lon="-118.397000" />
+    <node id="104" lat="33.951500" lon="-118.398000" />
+    <node id="105" lat="33.952500" lon="-118.399000" />
 
     <way id="500">
         <nd ref="100" />
@@ -14,4 +17,37 @@
         <tag k="name" v="Lincoln Blvd" />
         <tag k="maxspeed" v="45 mph" />
     </way>
+
+    <way id ="501">
+        <nd ref="102" />
+        <nd ref="103" />
+        <nd ref="104" />
+
+        <tag k="highway" v="secondary" />
+        <tag k="name" v="Forward Test Road" />
+        <tag k="maxspeed" v="35 mph" />
+        <tag k="oneway" v="yes"/>
+    </way>
+
+    <way id ="502">
+        <nd ref="104" />
+        <nd ref="105" />
+
+        <tag k="highway" v="tertiary" />
+        <tag k="name" v="Reverse Test Road" />
+        <tag k="maxspeed" v="30 mph" />
+        <tag k="oneway" v="-1"/>
+    </way>
+
+    <way id ="503">
+        <nd ref="101" />
+        <nd ref="103" />
+
+        <tag k="highway" v="residential" />
+        <tag k="name" v="Fallback Speed Road" />
+
+    </way>
+
+
+
 </osm>
