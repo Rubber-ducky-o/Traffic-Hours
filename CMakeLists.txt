@@ -21,10 +21,18 @@ add_executable(Traffic_hour
                 src/parser.cpp
                 src/Graph.cpp
                 src/algorithm.cpp
+                src/osm_parser.cpp
                 )
 
 
+target_include_directories(Traffic_hour
+                            PRIVATE
+                            ${CMAKE_SOURCE_DIR}/include
+                            ${CMAKE_SOURCE_DIR}/external/libosmium/libosmium-master/include
+)
+
 find_package(CURL REQUIRED)
+find_package(EXPAT REQUIRED)
 find_package(JsonCpp CONFIG REQUIRED)
 
 target_link_libraries(
@@ -32,6 +40,7 @@ target_link_libraries(
     PRIVATE
     CURL::libcurl
     JsonCpp::JsonCpp
+    EXPAT::EXPAT
 )
 
 enable_testing()

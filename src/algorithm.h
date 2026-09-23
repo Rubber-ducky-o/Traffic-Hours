@@ -23,6 +23,8 @@ Pathway dijkstra(const Graph& graph, int src,int end);
 
 double heuristic(const Graph& graph,double current,double goal);
 
+double haversineDistance(double lat1,double lon1,double lat2,double lon2);
+
 double radian_conversion(double coord);
 
 double intermediate_value(double lat1,double lat2,double phi,double lambda);

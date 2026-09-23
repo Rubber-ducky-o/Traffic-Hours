@@ -1,4 +1,5 @@
 build/
+external/libosmium
 cmake-build-*/
 
 CMakeCache.txt

@@ -67,12 +67,14 @@ const Vertex& Graph::operator[](int index) const
     return vertices[index];
 }
 
-void Graph::addVertex(std::string name,double lat,double longi)
+int Graph::addVertex(std::string name,double lat,double longi)
 {
-    if (Graph::findVertex(name)) return;
-
-    Vertex new_point(vertices.size(),name,lat,longi);
+    int id = vertices.size();
+    Vertex* existing = findVertex(name);
+    if (existing) return existing->id;
+    Vertex new_point(id,name,lat,longi);
     vertices.push_back(new_point);
+    return id;
 }
 
 
@@ -97,14 +99,14 @@ const std::vector<Edge>& Graph::getNeighbors(int id) const
 }
 
 //HELPER FUNCTIONS
-bool Graph::findVertex(std::string name){
+Vertex* Graph::findVertex(const std::string& name){
 
 
-    for(const auto& vertex : vertices)
+    for(auto& vertex : vertices)
     {
-        if (vertex.name == name) return true;
+        if (vertex.name == name) return &vertex;
     }
-    return false;
+    return nullptr;
 }
 
 

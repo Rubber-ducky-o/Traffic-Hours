@@ -2,6 +2,8 @@
 #define GRAPH_H
 #include <vector>
 #include <limits>
+#include <string>
+#include <utility>
 
 
 struct Edge;
@@ -56,14 +58,14 @@ class Graph{
 
         int size() const;
 
-        bool findVertex(std::string name);
+        Vertex* findVertex(const std::string& name);
         bool findVertex(int id);
         bool findEdge(int source,int destination);
         const Vertex& operator[](int index) const;
         Vertex& operator[](int index);
 
 
-        void addVertex(std::string name,double lat,double longi);
+        int addVertex(std::string name,double lat,double longi);
         void addEdge(int source,int destination,double distance, double travel_time,int speed);
         const std::vector<Edge>& getNeighbors(int id) const;
 };

@@ -1,11 +1,16 @@
 #include <iostream>
 #include <vector>
 #include "parser.h"
-
+#include "osm_parser.h"
+#include "algorithm.h"
 
 int main(){
 
     std::cout << "STARTING MAIN" <<std::endl;
+    Graph graph;
+
+    readOSM("sample_osm/map.osm",graph);
+
 
     std::vector<ClosureData> closures = grabbing_data();
 

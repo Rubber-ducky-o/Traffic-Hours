@@ -1,0 +1,17 @@
+<?xml version= "1.0" encoding="UTF-8"?>
+<osm version="0.6">
+
+    <node id="100" lat="33.944099" lon="-118.396158" />
+    <node id="101" lat="33.945000" lon="-118.396170" />
+    <node id="102" lat="33.949111" lon="-118.396180" />
+
+    <way id="500">
+        <nd ref="100" />
+        <nd ref="101" />
+        <nd ref="102" />
+
+        <tag k="highway" v="primary" />
+        <tag k="name" v="Lincoln Blvd" />
+        <tag k="maxspeed" v="45 mph" />
+    </way>
+</osm>

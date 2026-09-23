@@ -107,31 +107,31 @@ const double PI = 3.141592653589793;
 const double MAX_SPEED_MPH = 90.0;
 double heuristic(const Graph& graph,double current,double goal)
 {
-    double R = 3959;
-
     auto start_c = graph[current].getcoords();
     auto goal_c = graph[goal].getcoords();
 
-    double lat_c= radian_conversion(start_c.first);
-    double long_c = radian_conversion(start_c.second);
+    double distance = haversineDistance(start_c.first,start_c.second,
+    goal_c.first,goal_c.second);
 
-    double lat_g = radian_conversion(goal_c.first);
-    double long_g = radian_conversion(goal_c.second);
+    return (distance / MAX_SPEED_MPH) * 60.0;
 
+}
+double haversineDistance(double lat1,double lon1,double lat2,double lon2)
+{
+    double R = 3959;
 
-    double phi = lat_g - lat_c;
-    double lambda = long_g - long_c;
+    lat1 = radian_conversion(lat1);
+    lon1 = radian_conversion(lon1);
+    lat2 = radian_conversion(lat2);
+    lon2 = radian_conversion(lon2);
 
+    double phi = lat2 - lat1;
+    double lambda = lon2 - lon1;
 
-    double a = intermediate_value(lat_c,lat_g,phi,lambda);
+    double a = intermediate_value(lat1,lat2,phi,lambda);
     double c = central_angle(a);
 
-    double D = R * c;
-
-
-
-    return (D / MAX_SPEED_MPH) * 60.0;
-
+    return R * c;
 }
 
 double radian_conversion(double coord)
