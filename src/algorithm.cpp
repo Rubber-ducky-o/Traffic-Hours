@@ -1,6 +1,27 @@
 #include <iostream>
 #include "algorithm.h"
+#include "parser.h"
 
+
+
+int findNearestVertex(const Graph& graph, double latitude, double longitude)
+{
+    int closest_vertex = -1;
+    double closest_distance = INF;
+
+    for (const auto& vertex : graph.getData())
+    {
+        double dist = haversineDistance(latitude,longitude,vertex.coordinates.first,vertex.coordinates.second);
+        if (dist < closest_distance)
+        {
+            closest_distance = dist;
+            closest_vertex = vertex.id;
+        }
+
+    }
+
+    return closest_vertex;
+}
 
 
 std::vector<int> reconstruct_pathway(std::vector<int> came_from,int start,int goal){
@@ -19,8 +40,8 @@ std::vector<int> reconstruct_pathway(std::vector<int> came_from,int start,int go
 
     while(starts < end)
     {
-        std::swap(con_path[start],con_path[end]);
-        start++;
+        std::swap(con_path[starts],con_path[end]);
+        starts++;
         end--;
     }
 

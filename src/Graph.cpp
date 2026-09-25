@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Graph.h"
 #include "algorithm.h"
+#include "parser.h"
 
 
 Vertex::Vertex(int id, std::string name,double lat,double longi ) : name(name), id(id), coordinates({lat,longi}) {}
@@ -29,11 +30,12 @@ Edge::Edge(int destination, double distance,double travel_time,int speed_limit) 
     {
        this->travel_time = travel_time;
     }
+    base_travel_time = this->travel_time;
 }
 
 
 bool Edge::operator==(const Edge& other)const{
-    return travel_time == other.travel_time && destination == other.destination && distance == other.distance && speed_limit == other.speed_limit;
+    return travel_time == other.travel_time && destination == other.destination && distance == other.distance && speed_limit == other.speed_limit && base_travel_time == other.base_travel_time;
 }
 
 
@@ -93,6 +95,7 @@ void Graph::addEdge(int source,int destination, double distance,double travel_ti
 
 
 
+
 const std::vector<Edge>& Graph::getNeighbors(int id) const
 {
     return vertices[id].adj;
@@ -107,6 +110,26 @@ Vertex* Graph::findVertex(const std::string& name){
         if (vertex.name == name) return &vertex;
     }
     return nullptr;
+}
+
+Edge* Graph::getEdge(int source,int destination)
+{
+    if(!findVertex(source)) return nullptr;
+
+    if (!findVertex(destination)) return nullptr;
+
+
+
+    for (auto& Edge : vertices[source].adj)
+    {
+        if(Edge.destination == destination)
+        {
+            return &Edge;
+        }
+    }
+
+    return nullptr;
+
 }
 
 
@@ -133,7 +156,7 @@ bool Vertex::findEdge(const Vertex& vertex,int destination){
 
 bool Graph::findEdge(int source,int destination)
 {
-    if (!findVertex(source || !findVertex(destination)))
+    if (!findVertex(source) || !findVertex(destination))
     {
         return false;
     }

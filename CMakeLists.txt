@@ -22,6 +22,7 @@ add_executable(Traffic_hour
                 src/Graph.cpp
                 src/algorithm.cpp
                 src/osm_parser.cpp
+                src/traffic_modifier.cpp
                 )
 
 

@@ -17,6 +17,8 @@ struct Pathway
     Pathway(double dist) : travel_time(dist) {}
 };
 
+int findNearestVertex(const Graph& graph, double latitude, double longitude);
+
 std::vector<int> reconstruct_pathway(std::vector<int> came_from,int start,int end);
 
 Pathway dijkstra(const Graph& graph, int src,int end);

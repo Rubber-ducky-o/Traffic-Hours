@@ -30,6 +30,7 @@ struct Vertex{
 
 struct Edge {
     double travel_time;//time
+    double base_travel_time;
     double distance;//miles
     int destination;//other vertex
     int speed_limit;
@@ -59,8 +60,12 @@ class Graph{
         int size() const;
 
         Vertex* findVertex(const std::string& name);
+        Edge* getEdge(int source, int destination);
+
         bool findVertex(int id);
         bool findEdge(int source,int destination);
+
+
         const Vertex& operator[](int index) const;
         Vertex& operator[](int index);
 

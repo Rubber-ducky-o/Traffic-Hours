@@ -179,10 +179,18 @@ int parseSpeedLimit(const char* maxspeed)
 {
     if (maxspeed == nullptr) return -1;
 
+    std::string max_speed_str(maxspeed);
+
+
     try
     {
-        return std::stoi(maxspeed);
-
+        int speed = std::stoi(max_speed_str);
+        if (max_speed_str.find("km/h") != std::string::npos)
+        {
+            speed = speed * 0.621371;
+            return speed;
+        }
+        return speed;
     }
     catch(const std::invalid_argument&)
     {
