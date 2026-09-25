@@ -32,12 +32,15 @@ struct Edge {
     double travel_time;//time
     double base_travel_time;
     double distance;//miles
+
     int destination;//other vertex
     int speed_limit;
 
+    std::string road_name;
+    std::string road_ref;
 
 
-    Edge(int destination,double distance, double travel_time,int speed_limit);
+    Edge(int destination,double distance, double travel_time,int speed_limit,std::string road_name = "" , std::string road_red = "");
 
     bool operator==(const Edge& other)const;
 
@@ -71,7 +74,7 @@ class Graph{
 
 
         int addVertex(std::string name,double lat,double longi);
-        void addEdge(int source,int destination,double distance, double travel_time,int speed);
+        void addEdge(int source,int destination,double distance, double travel_time,int speed,std::string road_name ="",std::string road_ref ="");
         const std::vector<Edge>& getNeighbors(int id) const;
 };
 

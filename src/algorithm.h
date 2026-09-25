@@ -19,6 +19,9 @@ struct Pathway
 
 int findNearestVertex(const Graph& graph, double latitude, double longitude);
 
+int findNearbyVertex(const Graph& graph, double latitude, double longitude, double max_distance);
+
+
 std::vector<int> reconstruct_pathway(std::vector<int> came_from,int start,int end);
 
 Pathway dijkstra(const Graph& graph, int src,int end);
@@ -39,6 +42,8 @@ double caltraveltime(double distance, int speed_limit);
 
 
 Pathway a_star(const Graph& graph,int start, int end);
+
+Pathway DistancebasedDijkstra(const Graph& graph, int src, int goal);
 
 
 #endif

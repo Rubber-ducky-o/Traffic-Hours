@@ -8,9 +8,12 @@
 int main(){
 
     std::cout << "STARTING MAIN" <<std::endl;
+
+
     Graph graph;
 
-    readOSM("sample_osm/map.osm",graph);
+    readOSM("sample_osm/real_map.osm",graph);
+
     std::cout << "Graph contains" << graph.size() << " vertices" << std::endl;
 
 
@@ -24,75 +27,70 @@ int main(){
     int start = findNearestVertex(graph, start_lat,start_lon);
     int goal = findNearestVertex(graph, goal_lat,goal_lon);
 
-    std::cout << "Start vertex: " << start << std::endl;
-    std::cout << "Goal vertex: " << goal << std::endl;
 
     Pathway route = a_star(graph,start,goal);
+    double total_distance = 0.0;
 
-    std::cout << "A* route: ";
+    for (size_t i=0; i + 1 < route.path.size(); i++)
+    {
+        int source = route.path[i];
+        int destination = route.path[i+1];
+
+        Edge* edge = graph.getEdge(source,destination);
+
+        if (edge !=nullptr)
+        {
+            total_distance += edge->distance;
+        }
+    }
     for (int vertex : route.path)
     {
-        std::cout << vertex << " ";
-
+        std::cout<<vertex << " ";
     }
-    std::cout << std::endl;
 
-    std::cout << "Travel time: " << route.travel_time << " minutes" << std::endl;
+    std::cout <<"\nTotal distance: " << total_distance << " miles" << std::endl;
+    std::cout << "\nTravel time: " << route.travel_time << " minutes" << std::endl;
 
 
     std::vector<ClosureData> closures = grabbing_data();
 
     std::cout << "Parsed closures: " <<closures.size() << std::endl;
 
-    const ClosureData& test_closure = closures[0];
+    if (closures.empty())
+    {
+        std::cout << "No closures received.\n";
+        return 0;
+    }
 
-    int closure_start = findNearestVertex(graph,test_closure.begin_lat,test_closure.begin_lon);
-    int closure_end = findNearestVertex(graph,test_closure.end_lat,test_closure.end_lon);
+    long long departure_epoch = closures[0].start_epoch;
 
-    std::cout << "Closure maps to: " << closure_start << " -> " << closure_end << std::endl;
+    applyActiveClosures(graph,closures,departure_epoch);
 
-    Pathway closure_path = dijkstra(graph,closure_start,closure_end);
 
-    std::cout << "Closure path: ";
-    for (int vertex : closure_path.path)
+    Pathway new_route = a_star(graph,start,goal);
+
+    std::cout << "\nAdjusted route:\n";
+    total_distance =0.0;
+
+    for (size_t i=0; i + 1 < new_route.path.size(); i++)
+    {
+        int source = new_route.path[i];
+        int destination = new_route.path[i+1];
+
+        Edge* edge = graph.getEdge(source,destination);
+
+        if (edge !=nullptr)
+        {
+            total_distance += edge->distance;
+        }
+    }
+    for (int vertex : new_route.path)
     {
         std::cout << vertex << " ";
     }
-    std::cout << std::endl;
 
-    long long departure_epoch = test_closure.start_epoch;
-
-    if(isClosureActive(test_closure, departure_epoch))
-    {
-        std::cout << "Closure is Active\n";
-        applyClosure(graph,closure_path.path,test_closure);
-    }
-    else
-    {
-        std::cout << "Closure is Inactive\n";
-    }
-
-    Pathway adjusted_route = a_star(graph,start,goal);
-
-    Edge* edge0 = graph.getEdge(0,1);
-    Edge* edge1 = graph.getEdge(1,2);
-
-    if (edge0 != nullptr)
-    {
-        std::cout << "0 -> 1 base: " << edge0->base_travel_time << " adjusted: " << edge0->travel_time <<std::endl;
-    }
-    if (edge1 != nullptr)
-    {
-        std::cout << "1 -> 2 base: " << edge1->base_travel_time << " adjusted: " << edge1->travel_time <<std::endl;
-    }
-
-    std::cout << "Route after closure: ";
-    for (int vertex : adjusted_route.path)
-    {
-        std::cout <<vertex << " ";
-    }
-
-    std::cout << "\nAdjusted travel time: " << adjusted_route.travel_time << " minutes\n";
+    std::cout <<"\nTotal distance: " << total_distance << " miles" << std::endl;
+    std::cout << "\nAdjusted travel time: " << new_route.travel_time << " minutes\n";
 
 
     std::cout << "ENDING MAIN"<< std::endl;

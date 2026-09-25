@@ -20,7 +20,7 @@ std::pair<double,double> Vertex::getcoords() const{
     return coordinates;
 }
 
-Edge::Edge(int destination, double distance,double travel_time,int speed_limit) : distance(distance),destination(destination), speed_limit(speed_limit) {
+Edge::Edge(int destination, double distance,double travel_time,int speed_limit,std::string road_name,std::string road_ref) : distance(distance),destination(destination), speed_limit(speed_limit), road_name(road_name),road_ref(road_ref){
     if (travel_time < 0)
     {
       this->travel_time =caltraveltime(distance, speed_limit);
@@ -80,14 +80,14 @@ int Graph::addVertex(std::string name,double lat,double longi)
 }
 
 
-void Graph::addEdge(int source,int destination, double distance,double travel_time,int speed)
+void Graph::addEdge(int source,int destination, double distance,double travel_time,int speed,std::string road_name, std::string road_ref)
 {
     if (!findVertex(source) ||!findVertex(destination) ) return;
 
     if (Vertex::findEdge(vertices[source], destination)) return;
 
 
-    Edge new_edge(destination,distance, travel_time, speed);
+    Edge new_edge(destination,distance, travel_time, speed,road_name,road_ref);
     vertices[source].adj.push_back(new_edge);
 
 

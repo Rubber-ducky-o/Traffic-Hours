@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <unordered_set>
 
 
 enum roadwayDirection
@@ -25,15 +26,20 @@ int estimateSpeed(const char* highway);
 struct OSMHandler : public osmium::handler::Handler
 {
     std::unordered_map<long long, int> osm_to_graph;
+
+    const std::unordered_set<long long>& road_node_ids;
+
     Graph& graph;
 
-    OSMHandler(Graph& g)
-        : graph(g)
+    OSMHandler(Graph& g,const std::unordered_set<long long>& ids)
+        :road_node_ids(ids), graph(g)
     {
     }
 
     void node(const osmium::Node& node)
     {
+        if (road_node_ids.find(node.id()) == road_node_ids.end()) return;
+
         if (node.location().valid())
         {
             int graph_id = graph.addVertex(
@@ -54,6 +60,11 @@ struct OSMHandler : public osmium::handler::Handler
         const char* highway = way.tags().get_value_by_key("highway");
         const char* maxspeed = way.tags().get_value_by_key("maxspeed");
 
+        const char* name = way.tags().get_value_by_key("name");
+        const char* ref = way.tags().get_value_by_key("ref");
+
+        std::string road_name = (name != nullptr) ? name : "";
+        std::string road_ref = (ref != nullptr) ? ref : "";
 
         if(highway == nullptr) return;
         if (!isitDrivable(highway)) return;
@@ -119,37 +130,22 @@ struct OSMHandler : public osmium::handler::Handler
             switch(direction)
             {
                 case Forward:
-                    std::cout
-                    << "FORWARD: "
-                    << source << "->" <<destination
-                    << " | " << distance << " miles"
-                    << " | " << speed_limit << " mph"
-                    << " | " << travel_time << " min\n";
 
-                    graph.addEdge(source,destination,distance,travel_time,speed_limit);
+
+                    graph.addEdge(source,destination,distance,travel_time,speed_limit,road_name,road_ref);
                     break;
 
                 case Reverse:
-                    std::cout
-                    << "REVERSE: "
-                    << destination << "->" <<source
-                    << " | " << distance << " miles"
-                    << " | " << speed_limit << " mph"
-                    << " | " << travel_time << " min\n";
 
-                    graph.addEdge(destination,source,distance,travel_time,speed_limit);
+
+                    graph.addEdge(destination,source,distance,travel_time,speed_limit,road_name,road_ref);
                     break;
 
                 case Twoway:
-                    std::cout
-                    << "TWOWAY: "
-                    << source << " <-> " <<destination
-                    << " | " << distance << " miles"
-                    << " | " << speed_limit << " mph"
-                    << " | " << travel_time << "min\n";
 
-                    graph.addEdge(source,destination,distance,travel_time,speed_limit);
-                    graph.addEdge(destination,source,distance,travel_time,speed_limit);
+
+                    graph.addEdge(source,destination,distance,travel_time,speed_limit,road_name,road_ref);
+                    graph.addEdge(destination,source,distance,travel_time,speed_limit,road_name,road_ref);
                     break;
             }
 
@@ -159,20 +155,59 @@ struct OSMHandler : public osmium::handler::Handler
     }
 };
 
+struct RoadNodeCollector : public osmium::handler::Handler
+{
+    std::unordered_set<long long>& road_node_ids;
+
+    RoadNodeCollector(std::unordered_set<long long>& ids) : road_node_ids(ids) {}
+
+    void way(const osmium::Way& way)
+    {
+        const char* highway = way.tags().get_value_by_key("highway");
+
+        if (highway == nullptr) return;
+
+        if (!isitDrivable(highway)) return;
+
+        for (const auto& node_ref : way.nodes())
+        {
+            road_node_ids.insert(node_ref.ref());
+        }
+
+    }
+
+
+
+};
 void readOSM(const std::string& filename,Graph& graph)
 {
+    std::unordered_set<long long> road_node_ids;
+
+    {
     osmium::io::Reader reader{
         filename,
-        osmium::osm_entity_bits::node |
         osmium::osm_entity_bits::way
     };
 
-    OSMHandler handler(graph);
+    RoadNodeCollector collector(road_node_ids);
 
-    osmium::apply(reader,handler);
+    osmium::apply(reader,collector);
 
     reader.close();
+    }
 
+    {
+        osmium::io::Reader reader{
+            filename,
+            osmium::osm_entity_bits::node | osmium::osm_entity_bits::way
+        };
+
+        OSMHandler handler(graph, road_node_ids);
+
+        osmium::apply(reader,handler);
+
+        reader.close();
+    }
 }
 
 int parseSpeedLimit(const char* maxspeed)

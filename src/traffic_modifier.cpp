@@ -47,3 +47,23 @@ bool isClosureActive(const ClosureData& closure, long long departure_epoch)
 {
     return (closure.start_epoch <= departure_epoch && closure.end_epoch >= departure_epoch);
 }
+
+void applyActiveClosures(Graph& graph,const std::vector<ClosureData>& closures,long long departure_epoch)
+{
+    for(const auto& closure : closures)
+    {
+        if(!isClosureActive(closure,departure_epoch)) continue;
+
+        int start = findNearbyVertex(graph,closure.begin_lat,closure.begin_lon,MAX_SNAP_DISTANCE);
+        int end = findNearbyVertex(graph,closure.end_lat,closure.end_lon,MAX_SNAP_DISTANCE);
+
+        if (start == -1 || end == -1) continue;
+
+        auto pathway = DistancebasedDijkstra(graph,start,end);
+        if (pathway.path.empty() || pathway.path[0] == -1) continue;
+
+        applyClosure(graph,pathway.path,closure);
+
+    }
+
+}

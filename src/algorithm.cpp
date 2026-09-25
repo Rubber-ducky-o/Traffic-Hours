@@ -23,6 +23,23 @@ int findNearestVertex(const Graph& graph, double latitude, double longitude)
     return closest_vertex;
 }
 
+int findNearbyVertex(const Graph& graph, double latitude, double longitude, double max_distance)
+{
+    int nearest_vertex = findNearestVertex(graph,latitude,longitude);
+
+    if (nearest_vertex == -1) return -1;
+
+    auto vertex_coords = graph[nearest_vertex].getcoords();
+
+    double distance = haversineDistance(latitude,longitude,vertex_coords.first,vertex_coords.second);
+
+    if (distance > max_distance) return -1;
+
+    return nearest_vertex;
+
+
+}
+
 
 std::vector<int> reconstruct_pathway(std::vector<int> came_from,int start,int goal){
     int val = goal;
@@ -257,6 +274,80 @@ Pathway a_star(const Graph& graph, int start, int goal)
 
     result.travel_time = cost_so_far[goal];
     result.path = reconstruct_pathway(came_from,start,goal);
+
+    return result;
+
+}
+
+Pathway DistancebasedDijkstra(const Graph& graph, int src, int goal)
+{
+    int size = static_cast<int>(graph.size());
+
+    if (src < 0 || src >= size || goal < 0 || goal >= size)
+    {
+        Pathway pth(-1.0);
+        pth.path.push_back(-1);
+        return pth;
+    }
+
+
+    std::vector<double> dist(size,INF);
+    std::vector<int> prev(size,-1);
+
+    //{DISTANCE, VERTEX}
+    std::priority_queue<std::pair<double,int>,
+    std::vector<std::pair<double,int>>,
+    std::greater<std::pair<double,int>>> queue;
+
+    dist[src] = 0.0;
+    queue.push({0.0,src});
+
+    while (!queue.empty())
+    {
+        std::pair<double,int> u = queue.top();
+        queue.pop();
+
+        if (u.first > dist[u.second])
+        {
+            continue;
+        }
+
+        if (u.second == goal)
+        {
+            break;
+        }
+
+
+
+
+        std::vector<Edge> edges = graph.getNeighbors(u.second);
+
+        for (const auto& edge : edges)
+        {
+            int v = edge.destination;
+            double total_dist = u.first + edge.distance;
+
+            if (total_dist < dist[v])
+            {
+                prev[v] = u.second;
+                dist[v] = total_dist;
+
+                queue.push({total_dist,v});
+            }
+        }
+
+
+    }
+    Pathway result(-1.0);
+    if (dist[goal] == INF )
+    {
+        result.path.push_back(-1);
+        return result;
+    }
+
+
+    result.travel_time = -1;
+    result.path = reconstruct_pathway(prev,src,goal);
 
     return result;
 
