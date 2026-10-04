@@ -7,12 +7,46 @@
 
 int main(){
 
+    std::cout << "STARTING STATION TEST\n";
+
+    std::vector<Station> stations = loadStation("data/d07_text_meta_2026_08_25.txt");
+
+    std::cout << "\nStations loaded: " << stations.size() << '\n';
+    for (size_t i = 0; i< stations.size() && i < 5; ++i)
+    {
+        const Station& station = stations[i];
+
+        std::cout
+            << station.id << " "
+            << station.freeway << " "
+            << station.direction << " "
+            << station.latitude << " "
+            << station.longitude << " "
+            << station.type << " "
+            << station.lanes << '\n';
+
+    }
+
+
+    std::cout << "ENDING STATION TEST\n";
+
     std::cout << "STARTING MAIN" <<std::endl;
 
 
     Graph graph;
 
-    readOSM("sample_osm/real_map.osm",graph);
+    readOSM("sample_osm/socal-260924.osm.pbf",graph);
+
+    for (const auto& vertex : graph.getData())
+    {
+        for (const auto& edge : vertex.adj)
+        {
+            if (!edge.road_ref.empty())
+            {
+                std::cout << "Road ref: " << edge.road_ref << std::endl;
+            }
+        }
+    }
 
     std::cout << "Graph contains" << graph.size() << " vertices" << std::endl;
 

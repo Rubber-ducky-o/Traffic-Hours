@@ -30,11 +30,16 @@ target_include_directories(Traffic_hour
                             PRIVATE
                             ${CMAKE_SOURCE_DIR}/include
                             ${CMAKE_SOURCE_DIR}/external/libosmium/libosmium-master/include
+                            ${CMAKE_SOURCE_DIR}/external/protozero/include
+
 )
 
 find_package(CURL REQUIRED)
 find_package(EXPAT REQUIRED)
 find_package(JsonCpp CONFIG REQUIRED)
+
+find_package(ZLIB REQUIRED)
+find_package(Threads REQUIRED)
 
 target_link_libraries(
     Traffic_hour
@@ -42,6 +47,8 @@ target_link_libraries(
     CURL::libcurl
     JsonCpp::JsonCpp
     EXPAT::EXPAT
+    ZLIB::ZLIB
+    Threads::Threads
 )
 
 enable_testing()

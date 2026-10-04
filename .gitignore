@@ -1,5 +1,7 @@
 build/
-external/libosmium
+external/
+data/
+
 cmake-build-*/
 
 CMakeCache.txt
@@ -7,6 +9,7 @@ CmakeFiles/
 cmake_install.cmake
 Makefile
 CTestTestfile.cmake
+sample_osm/socal-260924.osm.pbf
 
 *.exe
 *.dll

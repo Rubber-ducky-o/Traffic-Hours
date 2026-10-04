@@ -2,6 +2,7 @@
 
 #include <osmium/io/reader.hpp>
 #include <osmium/io/xml_input.hpp>
+#include <osmium/io/pbf_input.hpp>
 #include <osmium/handler.hpp>
 #include <osmium/visitor.hpp>
 #include "Graph.h"
