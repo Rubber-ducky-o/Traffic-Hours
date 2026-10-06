@@ -1,6 +1,7 @@
 #ifndef TRAFFIC_H
 #define TRAFFIC_H
 
+#include <unordered_map>
 #include <vector>
 #include <string>
 
@@ -24,17 +25,38 @@ struct Station
 
 struct TrafficObservation
 {
-    int station_id;
     std::string timestamp;
+    std::string type;
+
+    int station_id;
+
 
     double speed;
+    bool has_speed;
 
     double flow;
     double occupancy;
 
 };
 
+struct SpeedBucket
+{
+    double total_speed;
+    int count;
+};
 
+using HistoricalData = std::unordered_map<int, std::vector<SpeedBucket>>;
+
+
+int getTimeBucket(const std::string& timestamp);
+HistoricalData buildHistoricalData(const std::vector<TrafficObservation>& observations);
+double getHistoricalSpeed(const HistoricalData& data, int station_id, const std::string& timestamp);
+int findStationVertex(const Graph& graph, const Station& station);
+void applyHistoricalTraffic(Graph& graph, const std::vector<Station>& stations, const HistoricalData& historical,const std::string& timestamp);
+
+
+
+std::vector<TrafficObservation> loadTraffic(const std::string& filename);
 std::vector<Station> loadStation(const std::string& filename);
 
 

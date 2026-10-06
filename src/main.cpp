@@ -7,92 +7,86 @@
 
 int main(){
 
-    std::cout << "STARTING STATION TEST\n";
-
     std::vector<Station> stations = loadStation("data/d07_text_meta_2026_08_25.txt");
 
-    std::cout << "\nStations loaded: " << stations.size() << '\n';
-    for (size_t i = 0; i< stations.size() && i < 5; ++i)
-    {
-        const Station& station = stations[i];
+    std::cout << "Station loaded: " << stations.size() << '\n';
 
-        std::cout
-            << station.id << " "
-            << station.freeway << " "
-            << station.direction << " "
-            << station.latitude << " "
-            << station.longitude << " "
-            << station.type << " "
-            << station.lanes << '\n';
+    std::vector<TrafficObservation> observations = loadTraffic("data/d07_text_station_5min_2026_10_02.txt");
 
-    }
+    std::cout << "Traffic observations loaded: " <<observations.size() <<'\n';
 
-
-    std::cout << "ENDING STATION TEST\n";
-
-    std::cout << "STARTING MAIN" <<std::endl;
-
+    HistoricalData historical = buildHistoricalData(observations);
 
     Graph graph;
 
-    readOSM("sample_osm/socal-260924.osm.pbf",graph);
+    readOSM("sample_osm/i5_test.osm",graph);
 
-    for (const auto& vertex : graph.getData())
+    std::cout << "Graph contains " << graph.size() <<" vertices\n";
+
+    std::string timestamp = "10/02/2026 00:00:00";
+
+    applyHistoricalTraffic(graph,stations,historical,timestamp);
+
+    std::cout << "Historical traffic applied\n";
+
+
+    double start_lat = 33.8801;
+    double start_lon = -118.021;
+
+    double goal_lat = 33.8834;
+    double goal_lon = -118.027;
+
+    int start = findNearbyVertex(graph,start_lat,start_lon,MAX_SNAP_DISTANCE);
+
+    int goal = findNearbyVertex(graph,goal_lat,goal_lon,MAX_SNAP_DISTANCE);
+
+    if (start == -1 || goal ==  -1)
     {
-        for (const auto& edge : vertex.adj)
-        {
-            if (!edge.road_ref.empty())
-            {
-                std::cout << "Road ref: " << edge.road_ref << std::endl;
-            }
-        }
+        std::cerr << "Could not map start or goal onto graph.\n";
+        return 1;
     }
 
-    std::cout << "Graph contains" << graph.size() << " vertices" << std::endl;
-
-
-    double start_lat = 33.944099;
-    double start_lon = -118.396159;
-
-    double goal_lat = 33.951500;
-    double goal_lon = -118.398000;
-
-
-    int start = findNearestVertex(graph, start_lat,start_lon);
-    int goal = findNearestVertex(graph, goal_lat,goal_lon);
-
-
     Pathway route = a_star(graph,start,goal);
+
     double total_distance = 0.0;
 
-    for (size_t i=0; i + 1 < route.path.size(); i++)
+    for (size_t i =0; i+ 1 < route.path.size(); i++)
     {
-        int source = route.path[i];
-        int destination = route.path[i+1];
-
-        Edge* edge = graph.getEdge(source,destination);
+        int src = route.path[i];
+        int dest = route.path[i+1];
+        Edge* edge = graph.getEdge(src,dest);
 
         if (edge !=nullptr)
         {
             total_distance += edge->distance;
         }
-    }
-    for (int vertex : route.path)
-    {
-        std::cout<<vertex << " ";
+
     }
 
-    std::cout <<"\nTotal distance: " << total_distance << " miles" << std::endl;
-    std::cout << "\nTravel time: " << route.travel_time << " minutes" << std::endl;
+    std::cout << "\nHistorical Traffic Route:\n";
+    for(int vertex : route.path)
+    {
+        std::cout << vertex << " ";
+    }
+
+    std::cout << "\nTotal distance: "
+            << total_distance
+            << " miles\n";
+
+    std::cout << "Travel time: "
+            << route.travel_time
+            << " minutes\n";
 
 
     std::vector<ClosureData> closures = grabbing_data();
 
-    std::cout << "Parsed closures: " <<closures.size() << std::endl;
+    std::cout << "\nClosures received: "
+            << closures.size()
+            << '\n';
 
     if (closures.empty())
     {
-        std::cout << "No closures received.\n";
+        std::cout << "No closure data recieved.\n";
         return 0;
     }
 
@@ -101,33 +95,36 @@ int main(){
     applyActiveClosures(graph,closures,departure_epoch);
 
 
-    Pathway new_route = a_star(graph,start,goal);
+    Pathway adjusted_route = a_star(graph,start,goal);
 
-    std::cout << "\nAdjusted route:\n";
-    total_distance =0.0;
+    total_distance = 0.0;
 
-    for (size_t i=0; i + 1 < new_route.path.size(); i++)
+    for (size_t i =0; i+ 1 < adjusted_route.path.size(); i++)
     {
-        int source = new_route.path[i];
-        int destination = new_route.path[i+1];
+        int source = adjusted_route.path[i];
+        int destination = adjusted_route.path[i+1];
+        Edge * edge = graph.getEdge(source, destination);
 
-        Edge* edge = graph.getEdge(source,destination);
-
-        if (edge !=nullptr)
+        if (edge != nullptr)
         {
             total_distance += edge->distance;
         }
     }
-    for (int vertex : new_route.path)
+
+    std::cout << "\nHistorical Traffic + Closures Route:\n";
+
+    for (int vertex : adjusted_route.path)
     {
         std::cout << vertex << " ";
     }
 
-    std::cout <<"\nTotal distance: " << total_distance << " miles" << std::endl;
-    std::cout << "\nAdjusted travel time: " << new_route.travel_time << " minutes\n";
+    std::cout << "\nTotal distance: "
+            << total_distance
+            << " miles\n";
 
-
-    std::cout << "ENDING MAIN"<< std::endl;
+    std::cout << "Adjusted travel time: "
+            << adjusted_route.travel_time
+            << " minutes\n";
 
     return 0;
 }

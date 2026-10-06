@@ -6,6 +6,195 @@
 #include <limits>
 
 
+int getTimeBucket(const std::string& timestamp)
+{
+    std::string hour_s = timestamp.substr(11,2);
+    std::string minute_s = timestamp.substr(14,2);
+    int hour = std::stoi(hour_s);
+    int minutes = std::stoi(minute_s);
+
+
+    int bucket = hour * 12 + minutes / 5;
+    return bucket;
+}
+
+HistoricalData buildHistoricalData(const std::vector<TrafficObservation>& observations)
+{
+    HistoricalData data;
+
+    for (const auto& obser : observations)
+    {
+        if (obser.has_speed)
+        {
+            int bucket = getTimeBucket(obser.timestamp);
+
+            auto& buckets = data[obser.station_id];
+            if (buckets.empty())
+            {
+                buckets.resize(288);
+            }
+            buckets[bucket].total_speed += obser.speed;
+            buckets[bucket].count++;
+        }
+    }
+    return data;
+}
+
+double getHistoricalSpeed(const HistoricalData& data, int station_id, const std::string& timestamp)
+{
+    int bucket = getTimeBucket(timestamp);
+
+    auto station = data.find(station_id);
+
+    if (station == data.end())
+    {
+        return -1.0;
+    }
+    const SpeedBucket& speed_bucket = station->second[bucket];
+
+    if (speed_bucket.count == 0)
+    {
+        return -1.0;
+    }
+
+    return speed_bucket.total_speed / speed_bucket.count;
+}
+
+void applyHistoricalTraffic(Graph& graph, const std::vector<Station>& stations, const HistoricalData& historical,const std::string& timestamp)
+{
+
+    for (const auto& station : stations)
+    {
+        int vertex = findStationVertex(graph, station);
+        double h_speed = getHistoricalSpeed(historical,station.id,timestamp);
+        if (vertex == -1  || h_speed <= 0)
+        {
+            continue;
+        }
+
+        std::vector<Edge> neighbors = graph.getNeighbors(vertex);
+
+        for (const auto& edge : neighbors)
+        {
+            if (normalizeRoute(edge.road_ref) != normalizeRoute(std::to_string(station.freeway)))
+            {
+                continue;
+            }
+
+            const Vertex& src = graph.getData()[vertex];
+            const Vertex& dest = graph.getData()[edge.destination];
+
+            auto src_coords = src.getcoords();
+            auto dest_coords = dest.getcoords();
+
+            std::string edge_dir = determinedirection(src_coords.first,src_coords.second,dest_coords.first,dest_coords.second);
+
+            std::string station_direction;
+
+            if (station_direction =="N") station_direction = "North";
+            else if (station_direction == "S") station_direction = "South";
+            else if (station_direction == "W") station_direction = "West";
+            else if (station_direction == "E") station_direction = "East";
+            else
+                continue;
+
+            if (edge_dir != station_direction)
+            {
+                continue;
+            }
+
+            Edge* actual_edge = graph.getEdge(vertex,edge.destination);
+            if (actual_edge == nullptr)
+            {
+                continue;
+
+            }
+
+            actual_edge -> travel_time = (actual_edge->distance / h_speed) * 60.0;
+            std::cout << "UPDATE EDGE " << vertex << " -> "<<edge.destination << " | station: "<<station.id << " | speed: "<< h_speed << " | new time: " << actual_edge->travel_time << '\n';
+
+        }
+
+    }
+}
+
+int findStationVertex(const Graph& graph, const Station& station)
+{
+    return findNearbyVertexRoute(
+        graph,
+        station.latitude,
+        station.longitude,
+        MAX_SNAP_DISTANCE,
+        std::to_string(station.freeway)
+    );
+}
+
+std::vector<TrafficObservation> loadTraffic(const std::string& filename)
+{
+    std::vector<TrafficObservation> observations;
+
+    std::ifstream stream(filename);
+
+    if (!stream.is_open())
+    {
+        std::cerr << "Failed to open station file: " << filename << std::endl;
+        return observations;
+    }
+
+    std::string lines;
+
+    while(std::getline(stream,lines))
+    {
+        TrafficObservation Obser {};
+
+        int column = 0;
+
+        std::stringstream ss(lines);
+        std::string value;
+        while(std::getline(ss,value,','))
+        {
+
+
+            if (column ==0 && !value.empty())
+            {
+                Obser.timestamp = value;
+
+            }
+
+            if (column ==1 && !value.empty())
+            {
+                Obser.station_id = std::stoi(value);
+
+            }
+
+            if (column == 11 && !value.empty())
+            {
+                Obser.speed = std::stod(value);
+                Obser.has_speed = true;
+            }
+            if (column == 5)
+            {
+                Obser.type = value;
+            }
+            if (column == 9 && !value.empty())
+            {
+                Obser.flow = std::stod(value);
+            }
+
+            if (column == 10 && !value.empty())
+            {
+                Obser.occupancy = std::stod(value);
+            }
+            column++;
+        }
+
+        observations.push_back(Obser);
+    }
+    return observations;
+
+}
+
+
 std::vector<Station> loadStation(const std::string& filename)
 {
     std::vector<Station> stations;

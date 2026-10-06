@@ -1,6 +1,7 @@
 build/
 external/
 data/
+sample_osm/
 
 cmake-build-*/
 
